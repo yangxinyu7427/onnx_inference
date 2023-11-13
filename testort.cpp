@@ -44,7 +44,7 @@ std::string print_shape(const std::vector<std::int64_t>& v) {
     ss << v[v.size() - 1];
     return ss.str();
 }
-
+// calculate size of tensor
 int calculate_product(const std::vector<std::int64_t>& v) {
     int total = 1;
     for (auto& i : v) total *= i;
@@ -102,7 +102,6 @@ int main(int argc, char* argv[]) {
         output_names.emplace_back(session.GetOutputNameAllocated(i, allocator).get());
         cout << i << "\t" << output_names.at(i)  << endl;
     }
-    cout<<"input_names:\n"<<input_names.size()<<" "<<input_types.size()<<" "<<input_shapes.size()<<endl;
     std::vector<Ort::Value> input_tensors;
     for(int i = 0; i < input_names.size(); i++){
         auto input_name=input_names[i];
@@ -144,7 +143,6 @@ int main(int argc, char* argv[]) {
                 // string
                 std::vector<string> input_tensor_values(total_number_elements);
                 std::generate(input_tensor_values.begin(), input_tensor_values.end(), [&] { return mockmap[input_name]; });
-
                 Ort::Value input_tensor = Ort::Value::CreateTensor(allocator, input_shape.data(), input_shape.size(), ONNX_TENSOR_ELEMENT_DATA_TYPE_STRING);
                 const char* const input_strings[] = {input_tensor_values[0].c_str()};
                 input_tensor.FillStringTensor(input_strings, 1U);
