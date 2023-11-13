@@ -189,6 +189,8 @@ int main(int argc, char* argv[]) {
         // NOTE: the number of output tensors is equal to the number of output nodes specifed in the Run() call
         assert(output_tensors.size() == output_names.size() && output_tensors[0].IsTensor());
 
+        auto * result = output_tensors.front().GetTensorMutableData<int64_t>();
+        cout << "inference result: "<< *result << endl;
     } catch (const Ort::Exception& exception) {
         std::cout << "ERROR running model inference: " << exception.what() << std::endl;
         exit(-1);
